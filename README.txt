@@ -68,14 +68,14 @@ Syntax (python/NEURON pseudocode):
   they can save you a lot of time, if you think you will need it.
 
 > Move towards achieving the goals of the project as stated:
-	- Main Question: "Can dendritic inhibition help cause the emergence of orientation tuning in a L2/3 V1 neuron?"
+	- Main Question: "Can dendrite-bound feedback signals modulate the I/O curve of this neuron?"
 
 	Milestones:
 	- Test model functionality - is it working properly?
-	- Allocate a single new synapse and ensure correct function
 	- Produce an orientation tuning curve (you will need multiple different stimulus orientations), and characterize it with the OSI
+	- Allocate a single new synapse and ensure correct function
 	- Allocate multiple (inhibitory?) synapses according to a set plan 
-	- Investigate the effect of inhibition on neuronal output - can tuning emerge?
+	- Investigate the effect of your newly-added feedback inputs on neuronal output – is orientation tuning present now?
 	- Is there something else you'd like to check using the model? You may do so at your discretion!
 	- Present your results!
 
