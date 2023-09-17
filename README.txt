@@ -18,26 +18,26 @@ INSTRUCTIONS:
     - You should not need to tweak anything concerning voltage-gated channels.
     - To add new synapses, you should follow the example of existing synapses in the model (code is documented).
 
-    Syntax (python/NEURON pseudocode):
-  		===========================================================================================================================
-		  section_name                                  # to access a specific section (the target of your synapses)
-		  my_synapse_ampa = h.GLU(synapse_position)     # allocates a single AMPA synapse at "synapse_position" (0-1)
-		  my_synapse_nmda = h.nmda(synapse_position)    # allocates a single NMDA synapse at "synapse_position" (0-1)
-		  my_synapse_gabaa= h.GABAa(synapse_position)   # allocates a single GABAa synapse at "synapse_position" (0-1)
-		  my_vecstim = h.VecStim()                      # creates a VecStim object
-	  	  my_vecstim.delay = 0                          # no delay to event playback (they start when simulation starts)
-	  	  # my_vecstim.delay = 100                      # OR events start 100ms after simulation starts
-	  	  my_vecstim.play(spike_train)                  # add events to the VecStim to play back ('spike_train' contains
-	  	  												# the timing of events in ms, and can be created in many ways)
-	  	  synaptic_threshold=-20                        # If spike_train[x] > synaptic_threshold, the synapse is activated
-	  	  synaptic_delay=0                              # Synapses should not have an activation delay (ms)
-	  	  synaptic_weight=0.001                         # Conductance of synaptic mechanisms - can have separate vars, of course
+Syntax (python/NEURON pseudocode):
+	===========================================================================================================================
+  section_name                                  # to access a specific section (the target of your synapses)
+  my_synapse_ampa = h.GLU(synapse_position)     # allocates a single AMPA synapse at "synapse_position" (0-1)
+  my_synapse_nmda = h.nmda(synapse_position)    # allocates a single NMDA synapse at "synapse_position" (0-1)
+  my_synapse_gabaa= h.GABAa(synapse_position)   # allocates a single GABAa synapse at "synapse_position" (0-1)
+  my_vecstim = h.VecStim()                      # creates a VecStim object
+	  my_vecstim.delay = 0                          # no delay to event playback (they start when simulation starts)
+	  # my_vecstim.delay = 100                      # OR events start 100ms after simulation starts
+	  my_vecstim.play(spike_train)                  # add events to the VecStim to play back ('spike_train' contains
+	  												# the timing of events in ms, and can be created in many ways)
+	  synaptic_threshold=-20                        # If spike_train[x] > synaptic_threshold, the synapse is activated
+	  synaptic_delay=0                              # Synapses should not have an activation delay (ms)
+	  synaptic_weight=0.001                         # Conductance of synaptic mechanisms - can have separate vars, of course
 
-	  	  # Connect synapses with (in this case) the same event source (VecStim object) - can also create different sources
-		  my_connection_ampa = h.NetCon(my_vecstim, my_synapse_ampa, synaptic_threshold, synaptic_delay, synaptic_weight)
-		  my_connection_nmda = h.NetCon(my_vecstim, my_synapse_nmda, synaptic_threshold, synaptic_delay, synaptic_weight*1.1)
-		  my_connection_gabaa = h.NetCon(my_vecstim, my_synapse_nmda, synaptic_threshold, synaptic_delay, synaptic_weight*1.2)
-		===========================================================================================================================
+	  # Connect synapses with (in this case) the same event source (VecStim object) - can also create different sources
+  my_connection_ampa = h.NetCon(my_vecstim, my_synapse_ampa, synaptic_threshold, synaptic_delay, synaptic_weight)
+  my_connection_nmda = h.NetCon(my_vecstim, my_synapse_nmda, synaptic_threshold, synaptic_delay, synaptic_weight*1.1)
+  my_connection_gabaa = h.NetCon(my_vecstim, my_synapse_nmda, synaptic_threshold, synaptic_delay, synaptic_weight*1.2)
+===========================================================================================================================
 
 > The "hoc.files" folder contains files that generate the reconstructed neuronal morphology and also allocate all non-synaptic 
   mechanisms required.
@@ -83,7 +83,9 @@ INSTRUCTIONS:
 Useful Papers:
 1. Silver, R. A. (2010). Neuronal arithmetic. Nature Reviews Neuroscience, 11(7), 474-489.
 2. Goetz, L., Roth, A., & Häusser, M. (2021). Active dendrites enable strong but sparse inputs to determine orientation selectivity. Proceedings of the National Academy of Sciences, 118(30), e2017339118.
-3. Park, J., Papoutsi, A., Ash, R. T., Marin, M. A., Poirazi, P., & Smirnakis, S. M. (2019). Contribution of apical and basal dendrites to orientation encoding in mouse V1 L2/3 pyramidal neurons. Nature Communications, 10(1), 1-11.
+3. Gidon, A., & Segev, I. (2012). Principles governing the operation of synaptic inhibition in dendrites. Neuron, 75(2), 330-341.
+4. Park, J., Papoutsi, A., Ash, R. T., Marin, M. A., Poirazi, P., & Smirnakis, S. M. (2019). Contribution of apical and basal dendrites to orientation encoding in mouse V1 L2/3 pyramidal neurons. Nature Communications, 10(1), 1-11.
+
 
 Other Resources:
 The project presentation (included as .pdf, and also as .pptx with speaker notes included)
