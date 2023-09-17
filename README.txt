@@ -58,7 +58,7 @@ Syntax (python/NEURON pseudocode):
 
 > By default, the simulation will output results (simulation time + somatic voltage at the midpoint) in the "results" folder, with a
   file name determined by the simulation parameters (neuron ID, simulation ID, stimulus orientation, and whether attentional inputs
-  are toggled on or not - but you don't have to worry about those, if you don't want to "play around" with them).
+  are toggled on or not - but you don't have to worry about attentional inputs, if you don't want to "play around" with them).
 
 > The simulation also outputs most printed output in a log file, found in the "logs" folder.
 
