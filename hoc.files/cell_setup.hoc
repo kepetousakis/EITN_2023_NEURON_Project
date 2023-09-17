@@ -1,0 +1,158 @@
+//L2/3 V1 pyramidal neuron
+
+//Passive Properties
+
+celsius = 37
+v_init =-79
+Rm=11000
+Ri =100
+Cm =1
+
+for i=0, all.count()-1 {
+	access all.o(i).sec
+	insert pas 
+	g_pas = 1/Rm
+	Ra=Ri
+	}
+
+for i=0, somatic.count()-1 {
+	access somatic.o(i).sec
+	cm=Cm
+}
+
+for i=0, basal.count()-1 {
+	access basal.o(i).sec
+	cm=Cm*2
+}
+
+for i=0, apical.count()-1 {
+	access apical.o(i).sec
+	cm=Cm*2
+}
+
+//-------------------------------------------------------
+//add active properties
+//-------------------------------------------------------   
+proc init_active_params(){
+	Ek = -80
+	Ena = 60
+	Eca = 140
+	vshift_na = -5//-5
+	vshift_ca = 0
+	
+	ca_factor=0.2
+	gna_soma =1000*1.1*0.459		//Smith Hausser
+	gkv_soma = 100	*0.5			//Smith Hausser
+	gkm_soma = 2.2	*1.27			//Smith,Hausser
+	gka_soma = 0.003 	*1.8		//5% of dendrites-Burkhalter et al. 2006 
+	gkca_soma =3 *0.1	*7		//Smith Hausser
+	gca_soma = 0.5	*0.5*ca_factor		//Cho,2006
+	git_soma = 0.0003 *0.5	*ca_factor	//Cho,2006
+
+	gna_dend = 600    *1.1*0.459
+	gkv_dend = 3	*0.5
+	gkm_dend = 1	*1.27
+	gka_dend = 0.06	    	*1.8
+	gkca_dend = 3 	*0.1	*7
+	gca_dend = 0.5 *0.5*ca_factor
+	git_dend = 0.0003 *0.5*ca_factor
+}
+
+proc init_active(){
+	access soma
+	distance()
+	for i=0, somatic.count()-1 {
+		access somatic.o(i).sec
+		insert na          
+		gbar_na = gna_soma 
+
+		insert kv          gbar_kv = gkv_soma
+		
+		insert km          gbar_km = gkm_soma
+		insert kap	   gbar_kap= gka_soma
+		insert kca         gbar_kca = gkca_soma
+		insert ca          gbar_ca = gca_soma 
+		insert it          gbar_it = git_soma   //T-type calcium, CaT.mod
+		insert cad
+	}
+	
+	for i=0, basal.count()-1 {
+		access basal.o(i).sec
+		insert na          gbar_na = gna_dend  
+	
+		insert kv          gbar_kv = gkv_dend
+	
+		insert km          gbar_km = gkm_dend
+		insert kca         gbar_kca = gkca_dend
+		insert kap	   gbar_kap= gka_dend
+		if (diam>0.8) { 		//Tuft-Burkhalter et al. 2006
+			gbar_kap= gka_dend*0.1
+		} else {
+			gbar_kap= gka_dend	
+		}
+		insert ca         
+		insert it   
+		for (x) {  
+			xdist = distance(x)    
+			gbar_ca = gca_dend+(0.002*xdist*gca_dend)
+			gbar_it = git_dend+(0.002*xdist*git_dend)
+		}
+		       
+		insert cad
+	}
+	
+	for i=0, apical.count()-1 {
+		access apical.o(i).sec
+		insert na          gbar_na = gna_dend
+		
+		insert kv          gbar_kv = gkv_dend	
+
+		insert km          gbar_km = gkm_dend
+		insert kca         gbar_kca = gkca_dend
+		insert kap
+		if (diam>0.8) { 		//Tuft-Burkhalter et al. 2006
+			gbar_kap= gka_dend*0.1
+		} else {
+			gbar_kap= gka_dend	
+		}
+
+		insert ca 
+		insert it  
+		for (x) {  
+			xdist = distance(x)    
+			if (xdist>260) {
+				gbar_ca = gca_dend*0.4		//Cho et al. 2006
+				gbar_it = git_dend*0.4
+				
+			} else {
+				//gbar_ca = gca_dend*((0.995*sin((0.008884*xdist)+0.7715))+(0.3458*sin((0.02772*xdist)+0.23)))
+				//gbar_it = git_dend*((0.995*sin((0.008884*xdist)+0.7715))+(0.3458*sin((0.02772*xdist)+0.23)))
+				gbar_ca = gca_dend*(0.9846*sin((0.008758*xdist)+0.8656))
+				gbar_it = git_dend*(0.9846*sin((0.008758*xdist)+0.8656))
+			}
+
+
+		}
+		
+		insert cad
+	}
+	
+	for i=0, all.count()-1 {all.o(i).sec if(ismembrane("k_ion"))  {ek = Ek}}
+	for i=0, all.count()-1 {all.o(i).sec if(ismembrane("na_ion")) {ena = Ena}}
+	for i=0, all.count()-1 {
+		access all.o(i).sec 
+		if(ismembrane("ca_ion")) {
+			ion_style("ca_ion",0,1,0,0,0)
+			vshift_ca = 0
+		}
+	}
+}
+
+
+init_active_params()  
+init_active()	
+  
+xopen("current-balance.hoc")
+current_balance(v_init)	
+
+    

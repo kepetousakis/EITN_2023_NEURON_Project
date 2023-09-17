@@ -1,0 +1,30 @@
+// This function is used to balance the membrane potential to v_init 
+// written by Yiota Poirazi, July 2001, poirazi@LNC.usc.edu
+
+proc current_balance() {
+	
+  finitialize($1)
+  fcurrent()	
+  printf("Balancing each compartment to %d mV\n", $1)
+
+  forall {
+	for (x) {
+		if (ismembrane("na_ion") && ismembrane("ca_ion") && (ismembrane("k_ion"))){
+			e_pas(x)=(ina(x)+ik(x)+ica(x)+g_pas(x)*v(x))/g_pas(x) 
+	    		
+		}
+		fcurrent()
+    	}
+ 
+  }
+
+ /* finitialize(v_init)
+  fcurrent()
+  if (cvode.active()) {
+	cvode.re_init()
+  } else {
+	 fcurrent()
+  }
+  frecord_init()*/
+
+}
