@@ -88,7 +88,7 @@ Useful Papers:
 
 
 Other Resources:
-The project presentation (included as .pdf, and also as .pptx with speaker notes included)
+The project presentation (uploaded on the Slack channel)
 The NEURON tutorials
 https://neuron.yale.edu/neuron/static/py_doc/index.html  [NEURON/Python documentation]
 https://docs.python.org/3/reference/  [Python documentation]
