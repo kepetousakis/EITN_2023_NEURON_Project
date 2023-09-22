@@ -93,9 +93,12 @@ else:
 # This code loads the cell morphology and imports active and synaptic mechanisms.
 # It automatically checks for your OS and attempts to load the appropriate files,
 # given that you have compiled the mechanism files properly (see README for details).
+# If this code fails to run properly, you will get an error stating "na is not a MECHANISM".
 h.load_file("hoc.files/neuron1_modified.hoc")  # Load morphology
 if os.name == 'nt':
 	h.nrn_load_dll("mod.files/nrnmech.dll")  # this needs to be added on Windows, or custom mechanisms won't work
+elif os.name == 'posix':
+	h.nrn_load_dll("mod.files/arm64/special.nrn")  # This needs to be added on MacOS (if NEURON works at all on your Mac...), or custom mechanisms won't work.
 else:
 	h.nrn_load_dll("mod.files/x86_64/libnrnmech.so")  # this needs to be added on Linux/Unix/MacOs, or custom mechanisms won't work
 
