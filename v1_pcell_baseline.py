@@ -117,7 +117,7 @@ afst = 0                # Percentage of apical stimulus-driven synapses "convert
 afreq = 0.2             # Stimulation frequency of attentional inputs (for the Poisson spike train)
 stim_factor = 1.2         # Multiplicative scaling factor for stim-driven synapse activation frequency (minimizes need for multiple runs if >1)
 
-stimulus_base_frequency   = 0.3 *5.5     # Frequency of stimulus-driven input events (parameter of a Poisson event generator)
+stimulus_base_frequency   = 0.3     # Frequency of stimulus-driven input events (parameter of a Poisson event generator)
 noise_base_frequency      = 0.11    # Frequency of background-driven input events (parameter of a Poisson event generator)
 inhibition_base_frequency = 0.11    # Frequency of (background) inhibitory input occurrence (parameter of a Poisson event generator)
 
