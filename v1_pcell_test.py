@@ -32,10 +32,14 @@ import utility_spikes_pickling as util
 h.load_file("hoc.files/neuron1_modified.hoc")  # Load morphology
 if os.name == 'nt':
 	h.nrn_load_dll("mod.files/nrnmech.dll")  # this needs to be added on Windows, or custom mechanisms won't work
-elif os.name == 'posix':
-	h.nrn_load_dll("mod.files/arm64/special.nrn")  # This needs to be added on MacOS (if NEURON works at all on your Mac...), or custom mechanisms won't work.
 else:
 	h.nrn_load_dll("mod.files/x86_64/libnrnmech.so")  # this needs to be added on Linux/Unix/MacOs, or custom mechanisms won't work
+
+try:
+	if os.name == 'posix':
+		h.nrn_load_dll("mod.files/arm64/special.nrn")  # This needs to be added on MacOS (if NEURON works at all on your Mac...), or custom mechanisms won't work.
+except:
+	pass
 
 h.load_file("hoc.files/cell_setup.hoc")  # Set up active and passive (non-synaptic) membrane mechanisms, and set currents to equilibrium (calls 'current-balance.hoc')	
 
