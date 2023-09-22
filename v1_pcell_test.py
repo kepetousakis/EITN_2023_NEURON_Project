@@ -25,10 +25,14 @@ import utility_spikes_pickling as util
 
 #%%===================================== Initialization =====================================
 
+# This code handles import of some required functions.
+
+
 # This code loads the cell morphology and imports active and synaptic mechanisms.
 # It automatically checks for your OS and attempts to load the appropriate files,
 # given that you have compiled the mechanism files properly (see README for details).
 # If this code fails to run properly, you will get an error stating "na is not a MECHANISM".
+h.load_file("stdgui.hoc")  # Load required base NEURON libraries
 h.load_file("hoc.files/neuron1_modified.hoc")  # Load morphology
 if os.name == 'nt':
 	h.nrn_load_dll("mod.files/nrnmech.dll")  # this needs to be added on Windows, or custom mechanisms won't work
