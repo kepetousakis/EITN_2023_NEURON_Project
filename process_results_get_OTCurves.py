@@ -28,12 +28,6 @@ att = 0   # Toggles attention on-off - only use this if you want to "play around
 
 # For a symmetrical visualization of the tuning curve, toggle "symmetrical_view" to True (otherwise it's one-sided)
 symmetrical_view = False
-if symmetrical_view:
-	stims_reflected = stims[1:]
-	stims_reflected = [-x for x in stims_reflected]
-	stims_reflected.reverse()
-	stims_temp = stims_reflected + stims
-	stims = stims_temp[:]
 
 path_to_results = 'results'
 
@@ -87,6 +81,12 @@ else:
 	print(f'Loading analysis results from  "./results/{_analysis_results_filename}".')
 	spikes = util.pickle_load(f"./results/{_analysis_results_filename}")
 
+if symmetrical_view:
+	stims_reflected = stims[1:]
+	stims_reflected = [-x for x in stims_reflected]
+	stims_reflected.reverse()
+	stims_temp = stims_reflected + stims
+	stims = stims_temp[:]
 				
 # Average across runs per neuron
 spikes = np.mean(spikes, axis=1)
