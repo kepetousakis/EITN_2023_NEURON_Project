@@ -289,11 +289,13 @@ if background_enabled:
 	basal_bg_inh_enabled = True
 	apical_bg_exc_enabled = True
 	apical_bg_inh_enabled = True
+	soma_bg_inh_enabled = True
 else:
 	basal_bg_exc_enabled = False
 	basal_bg_inh_enabled = False
 	apical_bg_exc_enabled = False
 	apical_bg_inh_enabled = False
+	soma_bg_inh_enabled = False
 
 #%%================================ Background synapses ================================
 
@@ -351,7 +353,33 @@ if basal_bg_inh_enabled:
 			syn_bg_gaba_basal.append(h.GABAa(sec(syn_pos)))
 			conn_bg_gaba_basal.append(h.NetCon(vecstims_bg_inh_basal[-1], syn_bg_gaba_basal[-1], -20, 0, gaba_g))
 	mprint("Allocated basal background inhibitory synapses.")
-		
+
+
+# Somatic inhibitory background (add into the "background synapses" cell)
+# Well spotted! This was indeed missing. Does it fix the issue though...?
+if soma_bg_inh_enabled:
+	events_bg_inh_soma = []
+	vecstims_bg_inh_soma = []
+	syn_bg_gaba_soma = []
+	conn_bg_gaba_soma = []
+	
+	# We do not need to iterate over sections here, since the soma is one section (made up of many segments, but it is still one section)
+	# This means we don't need a "for" loop to iterate through sections, but only a "for" loop that iterates over the synapses that we are
+	# allocating.
+	soma
+	for isyn in range(0, syn_inh_soma):
+		events_bg_inh_soma.append(h.Vector())
+		vecstims_bg_inh_soma.append(h.VecStim())
+		for time in range(0, int(h.tstop)):
+			if rng_t_inh.repick() > 0:
+				events_bg_inh_soma[-1].append(time)
+		vecstims_bg_inh_soma[-1].delay = 0
+		vecstims_bg_inh_soma[-1].play(events_bg_inh_soma[-1])
+		syn_pos = rng_pos.repick()
+		syn_bg_gaba_soma.append(h.GABAa(sec(syn_pos)))
+		conn_bg_gaba_soma.append(h.NetCon(vecstims_bg_inh_soma[-1], syn_bg_gaba_soma[-1], -20, 0, gaba_g))
+	mprint("Allocated somatic background inhibitory synapses.")
+
 		
 # Apical excitatory background
 if apical_bg_exc_enabled:
