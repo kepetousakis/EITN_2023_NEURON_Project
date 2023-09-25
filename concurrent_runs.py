@@ -29,7 +29,10 @@ stims = [0, 10, 20, 30, 60, 70, 80, 90]         # ...but you can also use this r
 # will be anywhere from 32 to 90! Do take the number of simulations into account, and also keep in mind that each simulation will be slower
 # than one you run on its own.
 
-print(f'Submitting {len(neurons)*len(runs)*len(stims):.0f} simulations to the CPU', end='')
+nsim = len(neurons)*len(runs)*len(stims)
+pct_done = lambda ns, cs: f'{100*(cs/ns):.02f}%'
+
+print(f'Submitting {nsim:.0f} simulations to the CPU', end='')
 
 attn = 0   # Toggles attention on-off - only use this if you want to "play around" with attentional inputs!
 batch = 1  # Don't change this - it tells the simulation that it's running in "batch" mode, so that it doesn't display GUI elements etc.
@@ -64,6 +67,7 @@ def task(data):
 	return f'Completed nrn={nrn:.0f} run={run:.0f} stim={stim:.0f} att={att:.0f} batch={bat:.0f}'
 
 def main():
+	done = 0
 	with concurrent.futures.ProcessPoolExecutor(max_workers=nproc) as executor:
 		tasklist_dict = {executor.submit(task, x): x for x in input_data}
 		for future in concurrent.futures.as_completed(tasklist_dict):
@@ -74,6 +78,8 @@ def main():
 				print(f'Exception {e} due to input {datum}')
 			else:
 				print(f'Input {datum} returned with status {status}')
+				done += 1
+				print(f'<!> Completed simulation ({done:.0f}/{nsim:.0f}) - {pct_done(nsim,done)} done.')
 				
 if __name__ == '__main__':
 	main()
