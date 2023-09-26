@@ -370,6 +370,12 @@ if soma_bg_inh_enabled:
 	for isyn in range(0, syn_inh_soma):
 		events_bg_inh_soma.append(h.Vector())
 		vecstims_bg_inh_soma.append(h.VecStim())
+
+		# For stimulus-driven synapses, you'd also need (if you use this code as a template):
+		# choose angular preference (synaptic 'tag')
+		# choose position/distribution (do you use a uniform distribution, or explicitly choose/enforce location?)
+		# modulate activation rate based on angular preference (stimulus-driven synapses use a gaussian function to change the activation frequency - will you do the same?)
+
 		for time in range(0, int(h.tstop)):
 			if rng_t_inh.repick() > 0:
 				events_bg_inh_soma[-1].append(time)
@@ -547,7 +553,6 @@ if basal_stim_enabled:
 	log('='*30)  # Separator, to aid readability of the log
 	for entry in debug_stim_basal:
 		log(entry) # Log all entries in the debug list
-
 
 # Allocate apical stim-driven synapses
 if apical_stim_enabled:
