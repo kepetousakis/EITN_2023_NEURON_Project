@@ -27,7 +27,7 @@ att = 0   # Toggles attention on-off - only use this if you want to "play around
 
 
 # For a symmetrical visualization of the tuning curve, toggle "symmetrical_view" to True (otherwise it's one-sided)
-symmetrical_view = False
+symmetrical_view = True
 
 path_to_results = 'results'
 
@@ -104,10 +104,12 @@ if symmetrical_view:
 	stims_reflected.reverse()
 	stims_all = stims_reflected + stims
 
+	r_pref = spikes_avg[0]; r_orth = spikes_avg[-1]
+
 	spikes_avg_refl = [x for x in spikes_avg[1:]]; spikes_avg_refl.reverse()
 	spikes_temp = [x for x in spikes_avg_refl] + [x for x in spikes_avg]
 	spikes_avg = spikes_temp[:]
-
+	
 	spikes_std_refl = [x for x in spikes_std[1:]]; spikes_std_refl.reverse()
 	spikes_std_temp = [x for x in spikes_std_refl] + [x for x in spikes_std]
 	spikes_std = spikes_std_temp[:]
@@ -115,6 +117,8 @@ if symmetrical_view:
 	spikes_serr_refl = [x for x in spikes_serr[1:]]; spikes_serr_refl.reverse()
 	spikes_serr_temp = [x for x in spikes_serr_refl] + [x for x in spikes_serr]
 	spikes_serr = spikes_serr_temp[:]
+else:
+	r_pref = spikes_avg[0]; r_orth = spikes_avg[-1]
 
 # Plot average + error (standard deviation or standard error)
 plt.figure()
@@ -131,11 +135,15 @@ figManager.window.showMaximized()
 
 OSI = lambda r_pref,r_orth: (r_pref-r_orth)/(r_pref+r_orth)
 
-this_osi = OSI(spikes_avg[0], spikes_avg[-1])
+this_osi = OSI(r_pref, r_orth)
 
-print(f'Analysis complete.\nPreferred orientation firing rate: {spikes_avg[0]:.2f} Hz, orthogonal orientation firing rate {spikes_avg[-1]:.2f} Hz | OSI for this configuration (att={att}): {this_osi:.04f}.')
+# print(f'Analysis complete.\nPreferred orientation firing rate: {spikes_avg[0]:.2f} Hz, orthogonal orientation firing rate {spikes_avg[-1]:.2f} Hz | OSI for this configuration (att={att}): {this_osi:.04f}.')
 
-plt.title(f'Tuning Curve (N = {len(neurons)*len(runs)}, att={att}, OSI={this_osi:.04f}), Rpref={spikes_avg[0]:.2f} Hz , Rorth={spikes_avg[-1]:.2f} Hz')
+# plt.title(f'Tuning Curve (N = {len(neurons)*len(runs)}, att={att}, OSI={this_osi:.04f}), Rpref={spikes_avg[0]:.2f} Hz , Rorth={spikes_avg[-1]:.2f} Hz')
+
+print(f'Analysis complete.\nPreferred orientation firing rate: {r_pref:.2f} Hz, orthogonal orientation firing rate {r_orth:.2f} Hz | OSI for this configuration (att={att}): {this_osi:.04f}.')
+
+plt.title(f'Tuning Curve (N = {len(neurons)*len(runs)}, att={att}, OSI={this_osi:.04f}), Rpref={r_pref:.2f} Hz , Rorth={r_orth:.2f} Hz')
 
 plt.show()
 
