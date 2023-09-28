@@ -63,7 +63,7 @@ if not os.path.exists(f"./results/{_analysis_results_filename}"):
 				elif os.path.exists(f'{path_to_results}/n{neuron}_r{run}_s{stim}_a{att}_somaV.dat'):
 					(t,datum) = load_data(neuron,run,stim,att,type='.dat')
 				else:
-					print('Error! Missing file: "{path_to_results}/n{neuron}_r{run}_s{stim}_a{att} ..."')
+					print(f'Error! Missing file: "{path_to_results}/n{neuron}_r{run}_s{stim}_a{att} ..."')
 					raise Exception
 				data[neuron, run, istim, :] = datum
 				(nsp, times) = util.GetSpikes(datum[5000:])
